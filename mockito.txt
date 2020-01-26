@@ -4,8 +4,29 @@ Robolectric:
  - Gives more realstic expericen when test calls into the android framework.
  - Robolectric handles inflation of views, resource loading, and lots of other stuff that’s implemented in native C code on Android devices.
 
+ problem : 
+ 	- The whole reason for Robolectric's existence is that the classes provided in the Android SDK jar throw exceptions when invoked in a JVM (i.e. not on an emulator or device).
+ 	- SDK classes method does not allows to access the state of object which manipulated by your application code. e.g. for jobscheduler, schedule and cancel method can't get accessed , it is restricted.
+ 	- Many of the classes and methods in the Android SDK are final and/or private or protected.   
+
  1. Shadows:
   - Each shadow can modify or extend the behavior of a corresponding class in the Android OS.
+  *- When an Android class is instantiated, Robolectric looks for a corresponding shadow class, and if it finds one it creates a shadow object to associate with it.
   - Shadow classes always need a public no-arg constructor so that the Robolectric framework can instantiate them.
   - Shadow objects implement methods that have the same signature as the Android class.
-  - Robolectric will invoke the method on a Shadow object when a method with the same signature on the Android object is invoked.
+  *- Robolectric will invoke the method on a Shadow object when a method with the same signature on the Android object is invoked.
+  - Robolectric supports shadowing all methods on the original class, including private, static, final or native.
+  
+  so when i created the shadowjobscheduler it actually 
+  during execution of test, when jobschedulaer invoked , robolectric look for shadowjobscheduler which i instantiated and associate it inreplace with real jobschedulaer. so when method on real object is gets called, it invoke the shadow method associated with shadowjobscheduler. 
+
+
+  ///////
+
+  about robolectric:
+  - https://stackoverflow.com/questions/7250086/how-does-exactly-custom-shadow-objects-work-in-robolectric
+
+  how to use robolectric in android studio:
+  - https://android.jlelse.eu/how-to-write-android-unit-tests-using-robolectric-27341d530613
+  	- add the robolectric dependency in android gradle.
+  	- @RunWith(RobolectricTestRunner)

@@ -1,0 +1,11 @@
+Robolectric:
+
+ - No need of real device for test execution.
+ - Gives more realstic expericen when test calls into the android framework.
+ - Robolectric handles inflation of views, resource loading, and lots of other stuff that’s implemented in native C code on Android devices.
+
+ 1. Shadows:
+  - Each shadow can modify or extend the behavior of a corresponding class in the Android OS.
+  - Shadow classes always need a public no-arg constructor so that the Robolectric framework can instantiate them.
+  - Shadow objects implement methods that have the same signature as the Android class.
+  - Robolectric will invoke the method on a Shadow object when a method with the same signature on the Android object is invoked.
